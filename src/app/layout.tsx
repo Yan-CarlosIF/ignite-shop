@@ -30,10 +30,10 @@ export default function RootLayout({
       <body className={`${roboto.className} antialiased`}>
         <div className="flex min-h-screen flex-col items-start justify-center">
           <header className="mx-auto w-full max-w-[1180px] py-8">
-            <Image src={Logo.src} alt="Logo Ignite" />
+            <Image src={Logo} alt="Logo Ignite" />
           </header>
+          {children}
         </div>
-        {children}
       </body>
     </html>
   );
