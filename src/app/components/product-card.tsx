@@ -1,19 +1,18 @@
-// components/ProductCard.tsx
 import { ShoppingBag } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 
 interface ProductCardProps {
-  id: number;
-  img: StaticImageData;
-  title: string;
-  price: string;
+  id: string;
+  img: StaticImageData | string;
+  name: string;
+  price: string | null;
 }
 
 export default function ProductCard({
   id,
   img,
-  title,
+  name,
   price,
 }: ProductCardProps) {
   return (
@@ -25,15 +24,15 @@ export default function ProductCard({
     >
       <Image
         src={img}
-        width={520}
+        width={480}
         height={480}
-        alt={title}
+        alt={name}
         className="object-cover"
       />
 
       <footer className="absolute inset-x-1 bottom-1 flex translate-y-[110%] items-center justify-between rounded-md bg-black/60 p-8 opacity-0 transition-all duration-200 ease-in-out group-hover:translate-y-0 group-hover:opacity-100">
         <div className="flex flex-col gap-1">
-          <strong className="text-xl text-white">{title}</strong>
+          <strong className="text-xl text-white">{name}</strong>
           <span className="text-2xl font-bold text-green-300">{price}</span>
         </div>
         <Link

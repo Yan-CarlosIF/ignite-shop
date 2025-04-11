@@ -1,44 +1,35 @@
-import Image from "next/image";
-import Link from "next/link";
-import Shirt1 from "@/assets/shirts/Shirt-1.png";
-import Shirt2 from "@/assets/shirts/Shirt-2.png";
-import Shirt3 from "@/assets/shirts/Shirt-3.png";
 import ProductCard from "./components/product-card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { stripe } from "@/lib/stripe";
+import { formatPrices } from "@/utils/formatPrices";
+import Stripe from "stripe";
 
-const products = [
-  {
-    id: 1,
-    img: Shirt1,
-    title: "Camiseta X",
-    price: "R$ 99,90",
-  },
-  {
-    id: 2,
-    img: Shirt2,
-    title: "Camiseta Y",
-    price: "R$ 109,90",
-  },
-  {
-    id: 3,
-    img: Shirt3,
-    title: "Camiseta Z",
-    price: "R$ 89,90",
-  },
-  {
-    id: 4,
-    img: Shirt1,
-    title: "Camiseta Alpha",
-    price: "R$ 79,90",
-  },
-  // pode adicionar mais...
-];
+async function getProducts() {
+  const response = await stripe.products.list({
+    expand: ["data.default_price"],
+  });
 
-export default function Home() {
+  return response.data.map((product) => {
+    const price = product.default_price as Stripe.Price;
+
+    return {
+      id: product.id,
+      name: product.name,
+      img: product.images[0],
+      price: price.unit_amount ? formatPrices(price.unit_amount / 100) : null,
+    };
+  });
+}
+
+export const revalidate = 7200; // re-fetch every 2 hours
+
+export default async function Home() {
+  const products = await getProducts();
+
   return (
     <div className="ml-auto flex min-h-[656px] w-full max-w-[calc(100vw-((100vw-1180px)/2))]">
       <Carousel opts={{ direction: "ltr", dragFree: true }} className="w-full">
