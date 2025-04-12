@@ -1,4 +1,5 @@
-import ProductCard from "./components/product-card";
+import Stripe from "stripe";
+
 import {
   Carousel,
   CarouselContent,
@@ -6,7 +7,8 @@ import {
 } from "@/components/ui/carousel";
 import { stripe } from "@/lib/stripe";
 import { formatPrices } from "@/utils/formatPrices";
-import Stripe from "stripe";
+
+import ProductCard from "./components/product-card";
 
 async function getProducts() {
   const response = await stripe.products.list({

@@ -1,8 +1,10 @@
-import { stripe } from "@/lib/stripe";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import Stripe from "stripe";
+
+import { stripe } from "@/lib/stripe";
 
 interface SuccessPageProps {
   searchParams: Promise<{ session_id: string }>;
@@ -22,6 +24,15 @@ const getSession = async (sessionId: string) => {
       img: product.images[0],
     },
   };
+};
+
+export const metadata: Metadata = {
+  title: "Compra efetuada! | Ignite Shop",
+  description: "Compra efetuada com sucesso!",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default async function Success({ searchParams }: SuccessPageProps) {

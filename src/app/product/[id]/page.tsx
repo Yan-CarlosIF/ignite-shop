@@ -1,6 +1,9 @@
-import { stripe } from "@/lib/stripe";
+import { Metadata } from "next";
 import Stripe from "stripe";
+
+import { stripe } from "@/lib/stripe";
 import { formatPrices } from "@/utils/formatPrices";
+
 import ProductDetails from "./components/product-details";
 
 export async function generateStaticParams() {
@@ -32,6 +35,24 @@ async function getProduct(id: string) {
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProduct(id);
+
+  return {
+    title: product.name + " | Ignite Shop",
+    description: product.description,
+    openGraph: {
+      images: [product.img],
+    },
+    twitter: {
+      images: [product.img],
+    },
+  };
 }
 
 export const revalidate = 3600;
