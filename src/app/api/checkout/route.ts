@@ -19,7 +19,8 @@ export async function POST(req: Request) {
   try {
     const checkoutSession = await stripe.checkout.sessions.create({
       cancel_url: "http://localhost:3000/",
-      success_url: "http://localhost:3000/success",
+      success_url:
+        "http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}",
       mode: "payment",
       line_items: [
         {
